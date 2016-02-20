@@ -8,6 +8,10 @@ func main() {
 	fmt.Println("A:", A)
 	fmt.Println("A Merged:", merge(A[:], 0, 3, 6))
 
+	B := [7]int{19, 5, 3, 8, 13, 1, 6}
+
+	fmt.Println("B:", B)
+	fmt.Println("B Merge-sorted:", mergeSort(B[:]))
 }
 
 /*
@@ -48,6 +52,21 @@ func merge(A []int, p int, q int, r int) []int {
 			A[k] = R[j]
 			j++
 		}
+	}
+
+	return A
+}
+
+func mergeSort(A []int) []int {
+	return mergeSortInternal(A, 0, len(A)-1)
+}
+
+func mergeSortInternal(A []int, p int, r int) []int {
+	if p < r {
+		q := (p + r) / 2
+		mergeSortInternal(A, p, q)
+		mergeSortInternal(A, q+1, r)
+		merge(A, p, q, r)
 	}
 
 	return A
