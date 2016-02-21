@@ -12,6 +12,12 @@ func main() {
 
 	fmt.Println("B:", B)
 	fmt.Println("B Merge-sorted:", mergeSort(B[:]))
+
+	C := [7]int{19, 5, 3, 8, 13, 1, 6}
+
+	fmt.Println("C:", C)
+	fmt.Println("C Bubble-sorted:", mergeSort(C[:]))
+
 }
 
 /*
@@ -67,6 +73,20 @@ func mergeSortInternal(A []int, p int, r int) []int {
 		mergeSortInternal(A, p, q)
 		mergeSortInternal(A, q+1, r)
 		merge(A, p, q, r)
+	}
+
+	return A
+}
+
+func bubbleSort(A []int) []int {
+	for i := 0; i < len(A)-1; i++ {
+		for j := len(A) - 1; j >= i+1; j-- {
+			if A[j] < A[j-1] {
+				tmp := A[j]
+				A[j] = A[j-1]
+				A[j-1] = tmp
+			}
+		}
 	}
 
 	return A
