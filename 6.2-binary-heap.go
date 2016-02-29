@@ -5,6 +5,9 @@ import (
 	"fmt"
 )
 
+const MaxInt = int(^uint(0) >> 1)
+const MinInt = -MaxInt - 1
+
 func main() {
 	heap := NewBinaryHeap(100)
 
@@ -21,6 +24,18 @@ func main() {
 	fmt.Println("maxHeap: ", maxHeap)
 
 	fmt.Println("heapSort:", heapSort(unsortedSlice))
+
+	// heapIncreaseKey
+	maxHeap.heapIncreaseKey(9, 100)
+	fmt.Println("maxHeap.heapIncreaseKey(9, 100): ", maxHeap)
+
+	// heapExtractMax
+	fmt.Println("maxHeap: ", maxHeap)
+	max := maxHeap.heapExtractMax()
+	fmt.Println("maxHeap after extraction, max: ", maxHeap, max)
+
+	maxHeap.maxHeapInsert(111)
+	fmt.Println("maxHeap after insertion: ", maxHeap)
 }
 
 type BinaryHeap struct {
@@ -110,4 +125,44 @@ func heapSort(A []int) []int {
 // 6.1-1
 // What are the minimum and maximum numbers of elements in a heap of height h?
 // Answer:
-// 2^h - 1 and 2^(h-1) respectively
+// 2^(h-1) and 2^h - 1 respectively
+
+// 6.5-priority-queues
+
+func (heap BinaryHeap) heapMaximum() int {
+	return heap.elements[1]
+}
+
+func (heap BinaryHeap) heapExtractMax() int {
+	if heap.heapSize == 0 {
+		panic("Heap underflow")
+	}
+
+	max := heap.elements[1]
+	heap.elements[1] = heap.elements[heap.heapSize]
+	heap.heapSize--
+	heap.maxHeapify(1)
+
+	return max
+}
+
+func (heap BinaryHeap) heapIncreaseKey(i, key int) {
+	if key < heap.elements[i] {
+		panic("new key is smaller than current key")
+	}
+
+	heap.elements[i] = key
+	for i > 1 && heap.elements[heap.parent(i)] < heap.elements[i] {
+		tmp := heap.elements[heap.parent(i)]
+		heap.elements[heap.parent(i)] = heap.elements[i]
+		heap.elements[i] = tmp
+
+		i = heap.parent(i)
+	}
+}
+
+func (heap BinaryHeap) maxHeapInsert(key int) {
+	heap.heapSize++
+	heap.elements[heap.heapSize] = MinInt
+	heap.heapIncreaseKey(heap.heapSize, key)
+}
