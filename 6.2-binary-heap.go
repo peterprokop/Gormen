@@ -161,8 +161,17 @@ func (heap BinaryHeap) heapIncreaseKey(i, key int) {
 	}
 }
 
-func (heap BinaryHeap) maxHeapInsert(key int) {
+func (heap *BinaryHeap) maxHeapInsert(key int) {
+
 	heap.heapSize++
+
+	if heap.heapSize > heap.length {
+		tmp := heap.elements
+		heap.elements = make([]int, heap.heapSize+2, heap.length*2)
+		copy(heap.elements, tmp)
+		heap.length *= 2
+	}
+
 	heap.elements[heap.heapSize] = MinInt
 	heap.heapIncreaseKey(heap.heapSize, key)
 }
