@@ -15,10 +15,10 @@ func main() {
 	L := arrayToList(A)
 
 	fmt.Println("arrayToList(A)")
-	printList(L)
+	fmt.Println(L)
 
 	fmt.Println("insertionSortList(arrayToList(A))")
-	printList(insertionSortList(L))
+	fmt.Println(insertionSortList(L))
 
 }
 
@@ -47,12 +47,11 @@ func arrayToList(array []float32) *BucketSortNode {
 	return firstNode
 }
 
-func printList(head *BucketSortNode) {
+func (head *BucketSortNode) String() string {
 	if head != nil {
-		fmt.Print(head.value, " -> ")
-		printList(head.next)
+		return fmt.Sprintf("%.2f -> %s", head.value, head.next.String())
 	} else {
-		fmt.Println(nil)
+		return "nil"
 	}
 }
 
